@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tfi-gtfs"
+version = "0.1.1"
+description = "A python docker container to serve TFI data."
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+    {name = "Kev O'C", email = "@kevoc"}
+]
+
+dependencies = [
+    "flask==2.3.3",
+    "flask_cors==4.0.0",
+    "waitress==2.1.2",
+    "pyyaml==6.0.1",
+    "redis==5.0.0",
+    "gtfs-realtime-bindings==1.0.0",
+    "pandas"
+]
+
+[project.optional-dependencies]
+dev = [
+    "wheel",
+
+    # required for the build environments that don't automatically
+    # have the pip module available.
+    "pip>=20.0",
+
+    # required for building
+    "setuptools",
+
+    # needed for testing
+    "pytest"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
