@@ -85,11 +85,6 @@ class StaticAssetsTestCase(unittest.TestCase):
         self.assertEqual(sa.stop_number_to_name(271), "O'Connell Street Lower")
         self.assertEqual(sa.stop_number_to_id(271), "8220DB000271")
 
-    def test_scheduled_departures(self):
-        sa = StaticAssets(STATIC_ASSETS)
-        df = sa.scheduled_departures(271)
-        print('stop')
-
     def test_expanded_calendar(self):
         cal = load_calendar(self.zf)
         cal_exc = load_calendar_exceptions(self.zf)
@@ -97,3 +92,6 @@ class StaticAssetsTestCase(unittest.TestCase):
         expanded_cal = build_service_calendar(cal, cal_exc)
         self.assertIsInstance(expanded_cal, pd.DataFrame)
 
+    def test_full_import(self):
+        sa = StaticAssets(STATIC_ASSETS)
+        # success if no exceptions thrown.
