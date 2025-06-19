@@ -1,7 +1,4 @@
 
-from .storage import LocalStore
-from .storage import RedisStore
-
 from .static_assets import StaticAssets
 
 from .static_assets import load_stops
