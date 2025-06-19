@@ -138,9 +138,12 @@ def load_stop_times(zf: zipfile.ZipFile):
     """Load the stop times from the zip."""
 
     with zf.open('stop_times.txt', 'r') as f:
-        return pd.read_csv(f, usecols=['trip_id', 'departure_time' ,'stop_id'],
-                              dtype={'trip_id': 'category', 'stop_id': 'category'},
-                              date_format='%H:%M:$S', parse_dates=['departure_time'])
+        df = pd.read_csv(f, usecols=['trip_id', 'departure_time' ,'stop_id'],
+                            dtype={'trip_id': 'category', 'departure_time': str,
+                                   'stop_id': 'category'})
+    df['departure_time'] = pd.to_timedelta(df['departure_time'])
+
+    return df
 
 
 def load_trips(zf: zipfile.ZipFile):
