@@ -1,5 +1,6 @@
 
 import datetime
+import waitress
 
 from flask import Flask
 from flask_cors import CORS
@@ -32,3 +33,8 @@ def to_iso_date(d):
 
     return ""
 
+
+def serve_forever(app: Flask, host, port, threads=1):
+    """Launch the webserver."""
+
+    waitress.serve(app, host=host, port=port, threads=threads)

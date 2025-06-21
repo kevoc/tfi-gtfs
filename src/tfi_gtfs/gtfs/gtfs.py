@@ -1,6 +1,4 @@
 
-import os
-import io
 import logging
 import threading
 
@@ -32,8 +30,8 @@ class GTFS:
         self._static_assets: Optional[StaticAssets] = None
         self._realtime_data: Optional[RealtimeData] = None
 
-        self._static_asset_agent = Optional[DownloadAgent] = None
-        self._realtime_data_agent = Optional[DownloadAgent] = None
+        self._static_asset_agent: Optional[DownloadAgent] = None
+        self._realtime_data_agent: Optional[DownloadAgent] = None
 
         self._data_available = threading.Event()
 
@@ -74,8 +72,7 @@ class GTFS:
     def new_static_assets(self, new_static_asset_zip: bytes):
         """Callback for an updated static asset Zip file."""
 
-        zip_buffer = io.BytesIO(new_static_asset_zip)
-        sa = StaticAssets(zip_buffer)
+        sa = StaticAssets(new_static_asset_zip)
         log.info('Updating static assets')
         self._static_assets = sa
 
@@ -122,8 +119,7 @@ class CachedGTFS(GTFS):
         GTFS.__init__(self, '', '',
                       api_key_check=False)
 
-        with open(static_assets_path, 'rb') as f:
-            self.new_static_assets(f.read())
+        self._static_assets = StaticAssets.from_file(static_assets_path)
 
         with open(realtime_data_path, 'rb') as f:
             self.new_realtime_data(f.read())

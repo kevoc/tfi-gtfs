@@ -51,8 +51,20 @@ def format_response(func):
             except:
                 print(sys.exc_info())
                 raise
+
+    # flask doesn't like it when the same function is used for multiple endpoints.
+    # By using a decorator, we're effectively returning the same function to flask.
+    # here, we set the name to be different, so flask sees different functions.
+    _wrapper.__name__ = func.__name__
+
     return _wrapper
 
+
+def show_page(page_name, **kwargs):
+    """Show the named page from the templates folder, filling
+    in any page variables with the given keyword args."""
+
+    return Response(render_template(page_name, **kwargs))
 
 
 ACCEPT_MAPPING = {
