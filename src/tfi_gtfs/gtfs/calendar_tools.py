@@ -52,7 +52,7 @@ def _expand_calendar_txt(calendar_df: pd.DataFrame,
 
 
 
-def build_service_calendar(calendar_df: pd.DataFrame, calendar_exception_df: pd.DataFrame,
+def build_service_calendar(calendar_df: pd.DataFrame, cal_exception_df: pd.DataFrame,
                            start_offset=-2, stop_offset=7):
     """Calculate the standard schedule based on calendar.txt, then apply the exceptions."""
 
@@ -63,19 +63,19 @@ def build_service_calendar(calendar_df: pd.DataFrame, calendar_exception_df: pd.
     cal = _expand_calendar_txt(calendar_df, from_date=from_date, to_date=to_date)
 
     # now filter the exception df for exceptions that occur within this period
-    _period_selector = (calendar_exception_df['date'].ge(pd.to_datetime(from_date)) &
-                        calendar_exception_df['date'].le(pd.to_datetime(to_date)))
+    _period_selector = (cal_exception_df['date'].ge(pd.to_datetime(from_date)) &
+                        cal_exception_df['date'].le(pd.to_datetime(to_date)))
 
     # add in the service additions
-    _for_addition = calendar_exception_df[_period_selector &
-          (calendar_exception_df.exception_type == CalendarException.ServiceAdded)]
+    _for_addition = cal_exception_df[_period_selector &
+          (cal_exception_df.exception_type == CalendarException.ServiceAdded)].copy()
     _for_addition.drop('exception_type', axis=1, inplace=True)
     cal = pd.concat([cal, _for_addition])
     cal.reset_index(drop=True, inplace=True)
 
     # take away any removed services
-    _for_removal = calendar_exception_df[_period_selector &
-          (calendar_exception_df.exception_type == CalendarException.ServiceRemoved)]
+    _for_removal = cal_exception_df[_period_selector &
+          (cal_exception_df.exception_type == CalendarException.ServiceRemoved)].copy()
     _for_removal.drop('exception_type', axis=1, inplace=True)
     _remove_indices = cal[['service_id', 'date']].apply(tuple, axis=1).isin(
                                                     _for_removal.apply(tuple, axis=1))
