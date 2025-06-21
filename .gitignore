@@ -167,5 +167,7 @@ settings.env
 
 # sample data for the unittests
 tests/GTFS.zip
-tests/live_data.bin
-tests/live_data.csv
+tests/realtime_data.*
+tests/asset_timestamp.txt
+
+**/.DS_Store
