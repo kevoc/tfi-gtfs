@@ -21,4 +21,4 @@ from . import downloader
 from .utils import seconds_until_timestamp
 from .utils import next_scheduled_exec_time
 
-from .gtfs import GTFS
+from .gtfs import GTFS, CachedGTFS
