@@ -3,10 +3,10 @@ import pandas as pd
 from datetime import datetime
 from google.transit import gtfs_realtime_pb2 as gtfsr
 
-from .constants import Stop, Trip
+from tfi_gtfs.gtfs.utils import timed_function
 
 
-class LiveData:
+class RealtimeData:
     """A container to store all live data from the TFI API"""
 
     def __init__(self, feed_bytes: bytes):

@@ -54,9 +54,6 @@ class StaticAssets:
         self._stop_times = load_stop_times(zf)
         self._trips = load_trips(zf)
 
-        self._stop_code_to_name = self._stops.set_index('stop_code').stop_name
-        self._stop_code_to_id = self._stops.set_index('stop_code').stop_id
-
         self._stop_times_by_id = self._stop_times.groupby('stop_id')
 
         # to filter the dataset correctly, we need to know the local time,
@@ -68,13 +65,13 @@ class StaticAssets:
             start_offset=SCHEDULE_START, stop_offset=SCHEDULE_END)
 
     def stop_number_is_valid(self, stop_number: int):
-        return stop_number in self._stops.stop_code
+        return stop_number in self._stops.index
 
     def stop_number_to_name(self, stop_number: int):
-        return self._stop_code_to_name[stop_number]
+        return self._stops.loc[stop_number].stop_name
 
     def stop_number_to_id(self, stop_number: int):
-        return self._stop_code_to_id[stop_number]
+        return self._stops.loc[stop_number].stop_id
 
     def _stop_times_for_stop_number(self, stop_number: int) -> pd.DataFrame:
         return self._stop_times_by_id.get_group(self.stop_number_to_id(stop_number))
@@ -123,15 +120,8 @@ def load_stops(zf: zipfile.ZipFile):
                                      'stop_lat','stop_lon'],
                             dtype={'stop_lat': np.float32, 'stop_lon': np.float32})
 
-    # create a new index column that uses the irish stop number (on bus stops),
-    # or the stop_id in case it's missing (for NI bus stops).
-    new_index = df.stop_code.copy()
-    new_index.where(new_index != 0, df.stop_id, inplace=True)
-    df.index = new_index.values
-
-    new_index.name = 'stop_code_or_id'
-
-    return df
+    # return the df with the index being the irish stop number (on bus stops)
+    return df.set_index('stop_code', drop=True)
 
 
 def load_stop_times(zf: zipfile.ZipFile):
