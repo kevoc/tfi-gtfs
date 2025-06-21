@@ -1,0 +1,9 @@
+
+services:
+  tfi-gtfs:
+    build: .
+    ports:
+      - "7341:7341"
+    env_file: settings.env
+    container_name: tfi-gtfs
+    image: tfi-gtfs
