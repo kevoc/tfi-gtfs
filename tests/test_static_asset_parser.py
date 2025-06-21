@@ -25,33 +25,33 @@ class StaticAssetsTestCase(unittest.TestCase):
 
     def test_agencies(self):
         agencies = load_agencies(self.zf)
-        self.assertEqual(len(agencies.columns), 1)
-        self.assertEqual(agencies.index.name, 'agency_id')
-        self.assertEqual(agencies.columns[0], 'agency_name')
+        self.assertEqual(2, len(agencies.columns))
+        self.assertEqual('agency_id', agencies.index.name)
+        self.assertEqual('agency_name', agencies.columns[0])
+        self.assertEqual('agency_timezone', agencies.columns[1])
 
     def test_routes(self):
         routes = load_routes(self.zf)
-        self.assertEqual(len(routes.columns), 3)
-        self.assertEqual(routes.index.name, 'route_id')
-        self.assertEqual(routes.columns[0], 'agency_id')
-        self.assertEqual(routes.columns[1], 'route_short_name')
-        self.assertEqual(routes.columns[2], 'route_long_name')
+        self.assertEqual(3, len(routes.columns))
+        self.assertEqual('route_id', routes.index.name)
+        self.assertEqual('agency_id', routes.columns[0])
+        self.assertEqual('route_short_name', routes.columns[1])
+        self.assertEqual('route_long_name', routes.columns[2])
 
     def test_calendar(self):
         calendar = load_calendar(self.zf)
-        self.assertEqual(len(calendar.columns), 9)
-        self.assertEqual(calendar.index.name, 'service_id')
+        self.assertEqual(9, len(calendar.columns))
+        self.assertEqual('service_id', calendar.index.name)
 
         for DoW in ['monday','tuesday','wednesday','thursday','friday','saturday','sunday']:
             self.assertIn(DoW, calendar.columns)
 
     def test_calendar_exceptions(self):
         cal_exc = load_calendar_exceptions(self.zf)
-        self.assertEqual(len(cal_exc.columns), 2)
-        self.assertEqual(cal_exc.index.name, 'service_id')
-
-        self.assertEqual(cal_exc.columns[0], 'date')
-        self.assertEqual(cal_exc.columns[1], 'exception_type')
+        self.assertEqual(3, len(cal_exc.columns))
+        self.assertEqual('service_id', cal_exc.columns[0])
+        self.assertEqual('date', cal_exc.columns[1])
+        self.assertEqual('exception_type', cal_exc.columns[2])
 
     def test_stops(self):
         stops = load_stops(self.zf)
@@ -64,18 +64,18 @@ class StaticAssetsTestCase(unittest.TestCase):
         stop_times = load_stop_times(self.zf)
         self.assertEqual(len(stop_times.columns), 3)
 
-        self.assertEqual(stop_times.columns[0], 'trip_id')
-        self.assertEqual(stop_times.columns[1], 'departure_time')
-        self.assertEqual(stop_times.columns[2], 'stop_id')
+        self.assertEqual('trip_id', stop_times.columns[0])
+        self.assertEqual('departure_time', stop_times.columns[1])
+        self.assertEqual('stop_id', stop_times.columns[2])
 
     def test_trips(self):
         trips = load_trips(self.zf)
         self.assertEqual(len(trips.columns), 4)
 
-        self.assertEqual(trips.columns[0], 'route_id')
-        self.assertEqual(trips.columns[1], 'service_id')
-        self.assertEqual(trips.columns[2], 'trip_id')
-        self.assertEqual(trips.columns[3], 'trip_headsign')
+        self.assertEqual('route_id', trips.columns[0])
+        self.assertEqual('service_id', trips.columns[1])
+        self.assertEqual('trip_id', trips.columns[2])
+        self.assertEqual('trip_headsign', trips.columns[3])
 
     def test_convenience_methods(self):
         sa = StaticAssets(STATIC_ASSETS)
