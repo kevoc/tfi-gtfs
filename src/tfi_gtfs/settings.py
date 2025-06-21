@@ -3,7 +3,7 @@ import os
 
 
 GTFS_STATIC_URL = os.environ.get('GTFS_STATIC_URL', "https://www.transportforireland.ie/transitData/Data/GTFS_Realtime.zip")
-GTFS_LIVE_URL = os.environ.get('GTFS_LIVE_URL', "https://api.nationaltransport.ie/gtfsr/v2/TripUpdates")
+GTFS_REALTIME_URL = os.environ.get('GTFS_REALTIME_URL', "https://api.nationaltransport.ie/gtfsr/v2/TripUpdates")
 API_KEY = os.environ.get('API_KEY')
 
 # Redis URL, probably something like redis://localhost:6379
