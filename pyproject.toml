@@ -9,7 +9,7 @@ description = "A python docker container to serve TFI data."
 readme = "README.md"
 requires-python = ">=3.12"
 authors = [
-    {name = "Kev O'C", email = "@kevoc"}
+    {name = "Kev O'C", email = "kevoc@github.com"}
 ]
 
 dependencies = [
@@ -36,6 +36,11 @@ dev = [
     # needed for testing
     "pytest"
 ]
+
+
+[project.scripts]
+tfi = "tfi_gtfs.__main__:main"
+
 
 [tool.setuptools.packages.find]
 where = ["src"]
